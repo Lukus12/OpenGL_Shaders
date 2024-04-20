@@ -28,7 +28,7 @@ void winFPS() {
 
 		frameCount = 0;
 
-		oss << "Laba_02 [" << averageFPS << " FPS]";
+		oss << "Laba_03 [" << averageFPS << " FPS]";
 		glutSetWindowTitle(oss.str().c_str());
 	}
 
@@ -78,6 +78,65 @@ void drawObject()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+// функци€ вывода кубика с ребрами единичной длины
+// кажда€ координата (x, y, z) мен€етс€ от -0.5 до +0.5
+void drawBox()
+{
+	// переменные дл€ вывода объекта (пр€моугольника из двух треугольников)
+	static GLuint VAO_Index = 0;	// индекс VAO-буфера
+	static GLuint VBO_Index = 0;	// индекс VBO-буфера
+	static int VertexCount = 0;		// количество вершин
+	static bool init = true;
+
+	if (init) {
+		// создание и заполнение VBO
+		glGenBuffers(1, &VBO_Index);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO_Index);
+		GLfloat Verteces[] = {
+			// передн€€ грань (два треугольника)
+			-0.5, +0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5, +0.5,
+			+0.5, +0.5, +0.5, -0.5, -0.5, +0.5, +0.5, -0.5, +0.5,
+			// задн€€ грань (два треугольника)
+			+0.5, +0.5,	-0.5, +0.5, -0.5, -0.5, -0.5, +0.5, -0.5,
+			-0.5, +0.5,	-0.5, +0.5, -0.5, -0.5, -0.5, -0.5, -0.5,
+			// права€ грань (два треугольника) 
+			+0.5, -0.5,	+0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5,
+			+0.5, +0.5,	+0.5, +0.5, -0.5, -0.5, +0.5, +0.5, -0.5,
+			// лева€ грань (два треугольника)
+			-0.5, +0.5,	+0.5, -0.5, +0.5, -0.5, -0.5, -0.5, +0.5,
+			-0.5, -0.5,	+0.5, -0.5, +0.5, -0.5, -0.5, -0.5, -0.5,
+			// верхн€€ грань (два треугольника)
+			-0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, -0.5,
+			+0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, +0.5,
+			// нижн€€ грань (два треугольника)
+			-0.5, -0.5, +0.5, -0.5, -0.5, -0.5, +0.5, -0.5, +0.5,
+			+0.5, -0.5, +0.5, -0.5, -0.5, -0.5, +0.5, -0.5, -0.5
+		};
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Verteces), Verteces, GL_STATIC_DRAW);
+
+		// создание VAO
+		glGenVertexArrays(1, &VAO_Index);
+		glBindVertexArray(VAO_Index);
+
+		// инициализаци€ VAO
+		glBindBuffer(GL_ARRAY_BUFFER, VBO_Index);
+		int location = 0;
+		glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(location);
+
+		// "отв€зка" буфера VAO на вс€кий случай, чтоб случайно не испортить
+		glBindVertexArray(0);
+
+		// указание количество вершин
+		VertexCount = 6 * 6;
+		init = false;
+	}
+
+	// вывод модели кубика на экран
+	glBindVertexArray(VAO_Index);
+	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
+}
+
 void display()
 {
 	// отчищаем буфер кадра
@@ -87,15 +146,29 @@ void display()
 	// включаем тест глубины (на вс€кий случай)
 	glEnable(GL_DEPTH_TEST);
 
-	// активируем шейдер
-	shader.activate();
-	shader.setUniform("offset", offset);
-	shader.setUniform("color1", color1);
-	shader.setUniform("color2", color2);
-	shader.setUniform("color3", color3);
+	// вывод полигонов в виде линий с отсечением нелицевых граней
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
-	// выводим пр€моугольник 
-	drawObject();
+	// активируем шейдер, используемый дл€ вывода объекта
+	shader.activate();
+	// устанавливаем матрицу проекции
+	mat4& projectionMatrix = camera.getProjectionMatrix();
+	shader.setUniform("projectionMatrix", projectionMatrix);
+	// получаем матрицу камеры
+	mat4& viewMatrix = camera.getViewMatrix();
+	// выводим все объекты
+	for (auto& grObj : graphicObjects) {
+		// устанавливаем матрицу наблюдени€ модели
+		mat4 modelViewMatrix = viewMatrix * grObj.getModelMatrix();
+		shader.setUniform("modelViewMatrix", modelViewMatrix);
+		// устанавливаем цвет
+		shader.setUniform("color", grObj.getColor());
+		// выводим модель кубика
+		drawBox();
+	}
+
 
 	// смена переднего и заднего буферов
 	glutSwapBuffers();
@@ -109,4 +182,6 @@ void reshape(int w, int h)
 {
 	// установить новую область просмотра, равную всей области окна
 	glViewport(0, 0, w, h);
+	// устанавливаем матрицу проекции
+	camera.setProjectionMatrix(35.0f, (float)w / h, 1.0f, 500.0f);
 }

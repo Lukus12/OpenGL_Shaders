@@ -3,6 +3,8 @@
 
 extern LARGE_INTEGER previous, frequency;
 
+void moveCamera(float simulationTime);
+
 double getSimulationTime() {
 	float time;
 	LARGE_INTEGER end;
@@ -15,14 +17,39 @@ void simulation()
 {
 	// определение времени симуляции
 	float simulationTime = getSimulationTime();
-	// вычисление нового смещения и изменение прочих параметров
-	offset = offset + (simulationTime / 1000 * speed);
-	// ограничения
-	if (offset.x + 0.5 >= 1) speed.x = -speed.x;
-	if (offset.x - 0.5 <= -1) speed.x = -speed.x;
-	if (offset.y + 0.5 >= 1) speed.y = -speed.y;
-	if (offset.y - 0.5 <= -1) speed.y = -speed.y;
 
+	moveCamera(simulationTime);
+	
 	// устанавливаем признак того, что окно нуждается в перерисовке
 	glutPostRedisplay();
 };
+
+void moveCamera(float simulationTime)
+{
+	float SpeedHorizontal = 100 * simulationTime;
+	float SpeedVertical = 400 * simulationTime;
+	float SpeedZoom = 200 * simulationTime;
+
+	if (GetAsyncKeyState(VK_UP)) camera.moveOXZ(0, SpeedVertical);
+	if (GetAsyncKeyState(VK_DOWN)) camera.moveOXZ(0, -SpeedVertical);
+	if (GetAsyncKeyState(VK_LEFT)) camera.moveOXZ(-SpeedHorizontal, 0);
+	if (GetAsyncKeyState(VK_RIGHT)) camera.moveOXZ(SpeedHorizontal, 0);
+
+	//поворот камеры на правую кнопку мыши
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+	if (GetAsyncKeyState(VK_RBUTTON)) {
+		camera.rotate((cursorPos.x - lastCursorPos.x) / 10.0, (cursorPos.y - lastCursorPos.y) / 10.0);
+	}
+	lastCursorPos = cursorPos;
+
+};
+// функция обработки вращения колесика мышки
+void mouseWheel(int wheel, int direction, int x, int y)
+{
+	// определяем, на сколько необходимо приблизить/удалить камеру
+	float delta = 100 * getSimulationTime();
+
+	if (direction > 0) camera.zoom(delta);
+	else camera.zoom(-delta);
+}

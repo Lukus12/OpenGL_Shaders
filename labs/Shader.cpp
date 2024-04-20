@@ -148,7 +148,7 @@ GLuint Shader::getUniformLocation(std::string name)
 		uniforms[name] = location;
 	}
 	else {
-		cout << "Uniform " << name << " not found in shader program" << endl;
+		cout << "Error handling : no uniform with the name " << name << " was found" << endl;
 	}
 	return location;
 }

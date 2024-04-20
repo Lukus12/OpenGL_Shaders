@@ -1,6 +1,10 @@
 #pragma once
 
+#include "../General_Heading.h"
+
 #include "../Shader.h"
+#include "../Scene/Camera/Camera.h"
+#include "../Scene/Object/GraphicObject/GraphicObject.h"
 
 // используемые пространства имен
 using namespace glm;
@@ -10,8 +14,11 @@ extern Shader shader;
 
 extern LARGE_INTEGER previous, frequency;
 
-extern vec2 offset;
-extern vec2 speed;
-extern vec4 color1;
-extern vec4 color2;
-extern vec4 color3;
+// ИСПОЛЬЗУЕМАЯ КАМЕРЫ
+extern Camera camera;
+// СПИСОК ГРАФИЧЕСКИХ ОБЪЕКТОВ ДЛЯ ВЫВОДА НА ЭКРАН
+extern vector<GraphicObject> graphicObjects;
+//Позиция курсора
+extern POINT lastCursorPos;
+
+void init();

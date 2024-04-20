@@ -4,7 +4,6 @@
 #include "Display/Display.h"
 #include "Display/Simulation.h"
 
-
 // основная функция
 void main(int argc, char** argv)
 {
@@ -21,7 +20,7 @@ void main(int argc, char** argv)
 	glutInitWindowSize(800, 600);
 	// создание окна
 	glutCreateWindow("");
-	glutSetWindowTitle("Laba_02 [ ]");
+	glutSetWindowTitle("Laba_03 [ ]");
 	// устанавливаем функцию, которая будет вызываться для перерисовки окна
 	QueryPerformanceFrequency(&frequency);
 	QueryPerformanceCounter(&previous);
@@ -36,9 +35,10 @@ void main(int argc, char** argv)
 	// определение текущей версии OpenGL
 	printf("OpenGL Version = %s\n\n", glGetString(GL_VERSION));
 
-	// загрузка шейдера
-	shader.load("Additional_Libraries/SHADER/Example.vsh", "Additional_Libraries/SHADER/Example.fsh");
+	init();
 
+	// устанавливаем функцию, которая будет вызываться при изменении состояния колесика мыши
+	glutMouseWheelFunc(mouseWheel);
 	// устанавливаем функцию, которая будет вызываться для перерисовки окна
 	glutDisplayFunc(display);
 	// устанавливаем функцию, которая будет вызываться при изменении размеров окна
