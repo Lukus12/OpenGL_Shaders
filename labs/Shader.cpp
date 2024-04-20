@@ -75,3 +75,81 @@ void Shader::activate() {
 void Shader::deactivate() {
 	glUseProgram(0);
 }
+
+//Uniform параметры
+
+void Shader::setUniform(std::string name, int value)
+{
+	GLuint uniformLocation = getUniformLocation(name);
+	if (uniformLocation == -1)
+	{
+		// Обработка ошибки: униформ с таким именем не найден
+		return;
+	}
+	glUniform1i(uniformLocation, value);
+}
+
+void Shader::setUniform(std::string name, float value)
+{
+	GLuint uniformLocation = getUniformLocation(name);
+	if (uniformLocation == -1)
+	{
+		// Обработка ошибки: униформ с таким именем не найден
+		return;
+	}
+	glUniform1f(uniformLocation, value);
+}
+
+void Shader::setUniform(std::string name, glm::vec2& value)
+{
+	GLuint uniformLocation = getUniformLocation(name);
+	if (uniformLocation == -1)
+	{
+		// Обработка ошибки: униформ с таким именем не найден
+		return;
+	}
+	glUniform2fv(uniformLocation, 1, &value[0]);
+}
+
+void Shader::setUniform(std::string name, glm::vec4& value)
+{
+	GLuint uniformLocation = getUniformLocation(name);
+	if (uniformLocation == -1)
+	{
+		// Обработка ошибки: униформ с таким именем не найден
+		return;
+	}
+	glUniform4fv(uniformLocation, 1, &value[0]);
+}
+
+void Shader::setUniform(std::string name, glm::mat4& value)
+{
+	GLuint uniformLocation = getUniformLocation(name);
+	if (uniformLocation == -1)
+	{
+		// Обработка ошибки: униформ с таким именем не найден
+		return;
+	}
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+}
+
+// получение индекса (location) uniform-переменной
+GLuint Shader::getUniformLocation(std::string name)
+{
+	// Проверяем, есть ли индекс в map-е
+	if (uniforms.find(name) != uniforms.end()){
+		return uniforms[name]; // если есть, то возвращаем
+	}
+
+	// Иначе ищем индекс переменной и добавляем
+	GLuint location = glGetUniformLocation(program, name.c_str());
+	if (location != -1){
+		// Сохраняем индекс в map
+		uniforms[name] = location;
+	}
+	else {
+		cout << "Uniform " << name << " not found in shader program" << endl;
+	}
+	return location;
+}
+

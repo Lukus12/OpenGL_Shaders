@@ -142,10 +142,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Data\Data.cpp" />
+    <ClCompile Include="Display\Display.cpp" />
+    <ClCompile Include="Display\Simulation.cpp" />
     <ClCompile Include="labs.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Data\Data.h" />
+    <ClInclude Include="Display\Display.h" />
+    <ClInclude Include="Display\Simulation.h" />
+    <ClInclude Include="General_Heading.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
