@@ -86,7 +86,7 @@ void main(int argc, char** argv)
 	printf("OpenGL Version = %s\n\n", glGetString(GL_VERSION));
 
 	// загрузка шейдера
-	shader.load("Additional_Libraries/SHADER/Example.vsh", "Additional_Libraries/SHADER/Example.fsh");
+	shader.load("Scene/Object/GraphicObject/SHADER/Example.vsh", "Scene/Object/GraphicObject/SHADER/Example.fsh");
 
 	// устанавливаем функцию, которая будет вызываться для перерисовки окна
 	glutDisplayFunc(display);
