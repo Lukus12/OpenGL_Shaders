@@ -90,4 +90,8 @@ void Camera::fromDecToPolar()
 
 	float cos_x = dot(normalize(v2), vec3(1, 0, 0));
 	angleX = degrees(acos(cos_x));
+
+	if (v1.z < 0) {
+		angleX = -angleX;
+	}
 }

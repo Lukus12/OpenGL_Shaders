@@ -15,7 +15,7 @@ POINT lastCursorPos;
 
 void init() {
 	// загрузка шейдера
-	shader.load("Additional_Libraries/SHADER/Example.vsh", "Additional_Libraries/SHADER/Example.fsh");
+	shader.load("Scene/Object/GraphicObject/SHADER/Example.vsh", "Scene/Object/GraphicObject/SHADER/Example.fsh");
 
 	//начальное положение камеры
 	camera.setProjectionMatrix(35.0, 800.0 / 600.0, 1.0, 100.0);
