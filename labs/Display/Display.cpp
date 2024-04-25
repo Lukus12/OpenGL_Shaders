@@ -28,114 +28,12 @@ void winFPS() {
 
 		frameCount = 0;
 
-		oss << "Laba_03 [" << averageFPS << " FPS]";
+		oss << "Laba_04 [" << averageFPS << " FPS]";
 		glutSetWindowTitle(oss.str().c_str());
 	}
 
 }
 
-// функци€ дл€ вывода квадрата с ребрами равными единице (от -0.5 до +0.5)
-void drawObject()
-{
-	// переменные дл€ вывода объекта (пр€моугольника из двух треугольников)
-	static bool init = true;
-	static GLuint VAO_Index = 0;		// индекс VAO-буфера
-	static GLuint VBO_Index = 0;		// индекс VBO-буфера
-	static int VertexCount = 0;			// количество вершин
-
-	// при первом вызове инициализируем VBO и VAO
-	if (init) {
-		init = false;
-		// создание и заполнение VBO
-		glGenBuffers(1, &VBO_Index);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_Index);
-		GLfloat	Verteces[] = {
-			-0.5,	+0.5,
-			-0.5,	-0.5,
-			+0.5,	+0.5,
-			+0.5,	+0.5,
-			-0.5,	-0.5,
-			+0.5,	-0.5
-		};
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Verteces), Verteces, GL_STATIC_DRAW);
-
-		// создание VAO
-		glGenVertexArrays(1, &VAO_Index);
-		glBindVertexArray(VAO_Index);
-		// заполнение VAO
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_Index);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(0);
-		// "отв€зка" буфера VAO, чтоб случайно не испортить
-		glBindVertexArray(0);
-
-		// указание количество вершин
-		VertexCount = 6;
-	}
-
-	// выводим пр€моугольник
-	glBindVertexArray(VAO_Index);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-}
-
-// функци€ вывода кубика с ребрами единичной длины
-// кажда€ координата (x, y, z) мен€етс€ от -0.5 до +0.5
-void drawBox()
-{
-	// переменные дл€ вывода объекта (пр€моугольника из двух треугольников)
-	static GLuint VAO_Index = 0;	// индекс VAO-буфера
-	static GLuint VBO_Index = 0;	// индекс VBO-буфера
-	static int VertexCount = 0;		// количество вершин
-	static bool init = true;
-
-	if (init) {
-		// создание и заполнение VBO
-		glGenBuffers(1, &VBO_Index);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_Index);
-		GLfloat Verteces[] = {
-			// передн€€ грань (два треугольника)
-			-0.5, +0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5, +0.5,
-			+0.5, +0.5, +0.5, -0.5, -0.5, +0.5, +0.5, -0.5, +0.5,
-			// задн€€ грань (два треугольника)
-			+0.5, +0.5,	-0.5, +0.5, -0.5, -0.5, -0.5, +0.5, -0.5,
-			-0.5, +0.5,	-0.5, +0.5, -0.5, -0.5, -0.5, -0.5, -0.5,
-			// права€ грань (два треугольника) 
-			+0.5, -0.5,	+0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5,
-			+0.5, +0.5,	+0.5, +0.5, -0.5, -0.5, +0.5, +0.5, -0.5,
-			// лева€ грань (два треугольника)
-			-0.5, +0.5,	+0.5, -0.5, +0.5, -0.5, -0.5, -0.5, +0.5,
-			-0.5, -0.5,	+0.5, -0.5, +0.5, -0.5, -0.5, -0.5, -0.5,
-			// верхн€€ грань (два треугольника)
-			-0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, -0.5,
-			+0.5, +0.5, -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, +0.5,
-			// нижн€€ грань (два треугольника)
-			-0.5, -0.5, +0.5, -0.5, -0.5, -0.5, +0.5, -0.5, +0.5,
-			+0.5, -0.5, +0.5, -0.5, -0.5, -0.5, +0.5, -0.5, -0.5
-		};
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Verteces), Verteces, GL_STATIC_DRAW);
-
-		// создание VAO
-		glGenVertexArrays(1, &VAO_Index);
-		glBindVertexArray(VAO_Index);
-
-		// инициализаци€ VAO
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_Index);
-		int location = 0;
-		glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(location);
-
-		// "отв€зка" буфера VAO на вс€кий случай, чтоб случайно не испортить
-		glBindVertexArray(0);
-
-		// указание количество вершин
-		VertexCount = 6 * 6;
-		init = false;
-	}
-
-	// вывод модели кубика на экран
-	glBindVertexArray(VAO_Index);
-	glDrawArrays(GL_TRIANGLES, 0, VertexCount);
-}
 
 void display()
 {
@@ -159,16 +57,17 @@ void display()
 	// получаем матрицу камеры
 	mat4& viewMatrix = camera.getViewMatrix();
 	// выводим все объекты
-	for (auto& grObj : graphicObjects) {
+	for (auto& graphicObject : graphicObjects) {
 		// устанавливаем матрицу наблюдени€ модели
-		mat4 modelViewMatrix = viewMatrix * grObj.getModelMatrix();
+		mat4 modelViewMatrix = viewMatrix * graphicObject.getModelMatrix();
 		shader.setUniform("modelViewMatrix", modelViewMatrix);
 		// устанавливаем цвет
-		shader.setUniform("color", grObj.getColor());
-		// выводим модель кубика
-		drawBox();
+		shader.setUniform("color", graphicObject.getColor());
+		// выводим меш
+		int meshId = graphicObject.getMeshId();
+		Mesh* mesh = ResourceManager::instance().getMesh(meshId);
+		if (mesh != nullptr) mesh->draw();
 	}
-
 
 	// смена переднего и заднего буферов
 	glutSwapBuffers();

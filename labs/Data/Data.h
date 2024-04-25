@@ -5,6 +5,7 @@
 #include "../Shader.h"
 #include "../Scene/Camera/Camera.h"
 #include "../Scene/Object/GraphicObject/GraphicObject.h"
+#include "../Scene/Object/GraphicObject/ResourceManager/ResourceManager.h"
 
 // используемые пространства имен
 using namespace glm;
