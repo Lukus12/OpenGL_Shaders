@@ -72,7 +72,7 @@ void main(int argc, char** argv)
 	// устанавливаем размер окна
 	glutInitWindowSize(800, 600);
 	// создание окна
-	glutCreateWindow("laba_01");
+	glutCreateWindow("laba_02");
 
 	// инициализация GLEW 
 	GLenum err = glewInit();
@@ -86,7 +86,7 @@ void main(int argc, char** argv)
 	printf("OpenGL Version = %s\n\n", glGetString(GL_VERSION));
 
 	// загрузка шейдера
-	shader.load("Scene/Object/GraphicObject/SHADER/Example.vsh", "Scene/Object/GraphicObject/SHADER/Example.fsh");
+	shader.load("Scene/Object/GraphicObject/SHADER/Example_2lb.vsh", "Scene/Object/GraphicObject/SHADER/Example_2lb.fsh");
 
 	// устанавливаем функцию, которая будет вызываться для перерисовки окна
 	glutDisplayFunc(display);
