@@ -149,8 +149,10 @@
     <ClCompile Include="Scene\Camera\Camera.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\GraphicObject.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\Mesh\Mesh.cpp" />
+    <ClCompile Include="Scene\Object\GraphicObject\RenderManager\RenderManager.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Scene\Object\GraphicObject\Shader\Shader.cpp" />
+    <ClCompile Include="Scene\Object\GraphicObject\Texture\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h" />
@@ -160,8 +162,10 @@
     <ClInclude Include="Scene\Camera\Camera.h" />
     <ClInclude Include="Scene\Object\GraphicObject\GraphicObject.h" />
     <ClInclude Include="Scene\Object\GraphicObject\Mesh\Mesh.h" />
+    <ClInclude Include="Scene\Object\GraphicObject\RenderManager\RenderManager.h" />
     <ClInclude Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Scene\Object\GraphicObject\Shader\Shader.h" />
+    <ClInclude Include="Scene\Object\GraphicObject\Texture\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

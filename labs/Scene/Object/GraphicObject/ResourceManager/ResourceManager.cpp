@@ -26,6 +26,38 @@ int ResourceManager::loadMesh(std::string filename)
     return index;
 }
 
+int ResourceManager::loadTexture(string filename)
+{
+    // ѕровер€ем, была ли ранее загружена така€ текстура
+    // find(). ≈сли элемент не найден, то возвращаетс€ итератор,
+    // указывающий на позицию за последним элементом в контейнере
+    if (textureIndexMap.find(filename) != textureIndexMap.end())
+    {
+        std::cout << "Texture '" << filename << "' already loaded. Returning existing index.\n";
+        return textureIndexMap[filename]; // если есть, то возвращаем его
+    }
+
+    //иначе создаЄм новый
+
+    Texture texture;
+    texture.load(filename);
+    texturs.push_back(texture);
+    int index = texturs.size() - 1;
+    textureIndexMap[filename] = index; // —охран€ем индекс текстуры по имени файла
+
+    std::cout << "Texture '" << filename << "' loaded. Index: " << index << std::endl;
+    return index;
+}
+
+Texture* ResourceManager::getTexture(int index)
+{
+    if (index >= 0 && index < texturs.size()) {
+        return &texturs[index];
+    }
+
+    return nullptr;
+}
+
 Mesh* ResourceManager::getMesh(int index)
 {
     if (index >= 0 && index < meshes.size()){

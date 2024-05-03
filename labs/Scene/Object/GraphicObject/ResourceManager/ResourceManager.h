@@ -3,6 +3,7 @@
 #include "../../../General_Heading.h"
 
 #include "../Mesh/Mesh.h"
+#include "../Texture/Texture.h"
 #include <thread>
 
 using namespace std;
@@ -21,6 +22,10 @@ public:
 	// «агрузка одного меша из указанного obj-файла
 	// ¬озвращаемое значение - индекс меша в менеджере ресурсов
 	int loadMesh(string filename);
+	int loadTexture(string filename);
+	// ѕолучение текстуры по еЄ индексу
+	// ≈сли такой текстуры нет (недействительный индекс) возвращаетс€ nullptr
+	Texture* getTexture(int index);
 	// ѕолучение меша по его индексу
 	// ≈сли такого меша нет (недействительный индекс) возвращаетс€ nullptr
 	Mesh* getMesh(int index);
@@ -40,6 +45,10 @@ private:
 private:
 	// вектор дл€ хранени€ всех мешей
 	vector<Mesh> meshes;
+	// вектор дл€ хранени€ всех текстур
+	vector<Texture> texturs;
 	// ’ранение индексов мешей по их именам
-	map<std::string, int> meshIndexMap;
+	map<string, int> meshIndexMap;
+	// ’ранение индексов текстур по их именам
+	map<string, int> textureIndexMap;
 };

@@ -18,9 +18,6 @@
     <ClCompile Include="labs.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Display\Display.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -42,12 +39,18 @@
     <ClCompile Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Object\GraphicObject\Texture\Texture.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Object\GraphicObject\RenderManager\RenderManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Object\GraphicObject\Shader\Shader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display\Simulation.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Object\GraphicObject\GraphicObject.h">
@@ -69,6 +72,15 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Object\GraphicObject\Texture\Texture.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Object\GraphicObject\RenderManager\RenderManager.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Object\GraphicObject\Shader\Shader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

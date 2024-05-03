@@ -19,14 +19,19 @@ public:
 	void setAngle(float degree);
 	// установить идентификатор используемого меша
 	void setMeshId(int id);
+	// установить идентификатор используемой текстуры
+	void setTextureId(int id);
 
 	// получить различные параметры
 	vec4& getColor();
 	mat4& getModelMatrix();
+	int getTextureId();
 	int getMeshId();
 private:
 	// идентификатор используемого меша
 	int meshId;
+	// идентификатор используемой текстуры
+	int textureId;
 	// цвет объекта
 	vec4 color = {};
 	// матрица модели (задает позицию и ориентацию)

@@ -34,6 +34,11 @@ void GraphicObject::setMeshId(int id)
 	this->meshId = id;
 }
 
+void GraphicObject::setTextureId(int id)
+{
+	this->textureId = id;
+}
+
 vec4& GraphicObject::getColor()
 {
 	return color;
@@ -42,6 +47,11 @@ vec4& GraphicObject::getColor()
 mat4& GraphicObject::getModelMatrix()
 {
 	return modelMatrix;
+}
+
+int GraphicObject::getTextureId()
+{
+	return textureId;
 }
 
 int GraphicObject::getMeshId()
@@ -54,7 +64,8 @@ void GraphicObject::recalculateModelMatrix()
 {
 	modelMatrix = mat4(
 		vec4(cos(angle), 0, sin(angle), 0),	// 1-ый столбец: направление оси X
-		vec4(0, 1, 0, 0),	// 2-ой столбец: направление оси Y
-		vec4(-sin(angle), 0, cos(angle), 0),	// 3-ий столбец: направление оси Z
-		vec4(position.x, position.y, position.z, 1));	// 4-ый столбец: позиция объекта (начала координат)
+		vec4(0, 1, 0, 0), // 2-ой столбец: направление оси Y
+		vec4(-sin(angle), 0, cos(angle), 0), // 3-ий столбец: направление оси Z
+		vec4(position.x, position.y, position.z, 1) // 4-ый столбец: позиция объекта (начала координат)
+	);
 }

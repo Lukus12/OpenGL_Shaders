@@ -28,7 +28,7 @@ void winFPS() {
 
 		frameCount = 0;
 
-		oss << "Laba_04 [" << averageFPS << " FPS]";
+		oss << "Laba_05 [" << averageFPS << " FPS]";
 		glutSetWindowTitle(oss.str().c_str());
 	}
 
@@ -37,37 +37,16 @@ void winFPS() {
 
 void display()
 {
-	// отчищаем буфер кадра
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// включаем тест глубины (на всякий случай)
-	glEnable(GL_DEPTH_TEST);
-
-	// вывод полигонов в виде линий с отсечением нелицевых граней
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-
-	// активируем шейдер, используемый для вывода объекта
-	shader.activate();
-	// устанавливаем матрицу проекции
-	mat4& projectionMatrix = camera.getProjectionMatrix();
-	shader.setUniform("projectionMatrix", projectionMatrix);
-	// получаем матрицу камеры
-	mat4& viewMatrix = camera.getViewMatrix();
-	// выводим все объекты
+	// для удобства определяем ссылку на RenderManager
+	RenderManager& renderManager = RenderManager::instance();
+	// начинаем вывод нового кадра
+	renderManager.start();
+	// добавляем в очередь все объекты, которые необходимо вывести
 	for (auto& graphicObject : graphicObjects) {
-		// устанавливаем матрицу наблюдения модели
-		mat4 modelViewMatrix = viewMatrix * graphicObject.getModelMatrix();
-		shader.setUniform("modelViewMatrix", modelViewMatrix);
-		// устанавливаем цвет
-		shader.setUniform("color", graphicObject.getColor());
-		// выводим меш
-		int meshId = graphicObject.getMeshId();
-		Mesh* mesh = ResourceManager::instance().getMesh(meshId);
-		if (mesh != nullptr) mesh->draw();
+		renderManager.addToRenderQueue(graphicObject);
 	}
+	// завершаем построение кадра
+	renderManager.finish();
 
 	// смена переднего и заднего буферов
 	glutSwapBuffers();

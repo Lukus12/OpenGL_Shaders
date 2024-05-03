@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include "..\Data\Data.h"
+#include "..\Scene\Object\GraphicObject\RenderManager\RenderManager.h"
 
 // функция вызывается при перерисовке окна
 // в том числе и принудительно, по команде glutPostRedisplay

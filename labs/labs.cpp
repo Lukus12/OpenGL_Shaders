@@ -20,7 +20,7 @@ void main(int argc, char** argv)
 	glutInitWindowSize(800, 600);
 	// создание окна
 	glutCreateWindow("");
-	glutSetWindowTitle("Laba_04 [ ]");
+	glutSetWindowTitle("Laba_05 [ ]");
 	// устанавливаем функцию, которая будет вызываться для перерисовки окна
 	QueryPerformanceFrequency(&frequency);
 	QueryPerformanceCounter(&previous);
@@ -31,6 +31,11 @@ void main(int argc, char** argv)
 		fprintf(stderr, "Glew error: %s\n", glewGetErrorString(err));
 		return;
 	}
+
+	// инициализация библиотеки DevIL для загрузки изображений
+	ilInit();
+	iluInit();
+	ilutInit();
 
 	// определение текущей версии OpenGL
 	printf("OpenGL Version = %s\n\n", glGetString(GL_VERSION));
