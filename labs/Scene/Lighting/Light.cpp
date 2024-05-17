@@ -1,56 +1,46 @@
 #include "Light.h"
 
-Light::Light() :Light(vec3()) {
-
-}
-Light::Light(vec3 position) {
-
-	setPosition(position);
-};
-Light::Light(float x, float y, float z) :Light(vec3(x, y, z)) {
-
-}
-
-void Light::setPosition(vec3 position)
+Light::Light()
 {
-	this->position.x = position.x;
-	this->position.y = position.y;
-	this->position.z = position.z;
-	this->position.w = 1;
 }
 
-void Light::setAmbient(vec4 color)
+void Light::setDirection(vec3 direction)
 {
-	this->ambient.r = color.x;
-	this->ambient.g = color.y;
-	this->ambient.b = color.z;
-	this->ambient.a = 1;
+	//т.к источник света направленный то 4 значение направления 0
+	this->direction = vec4(direction, 0);
 }
 
-void Light::setDiffuse(vec4 color)
+void Light::setAmbient(vec4 ambient)
 {
-	this->diffuse.r = color.x;
-	this->diffuse.g = color.y;
-	this->diffuse.b = color.z;
-	this->diffuse.a = 1;
+	this->ambient = ambient;
 }
 
-void Light::setSpecular(vec4 color)
+void Light::setDiffuse(vec4 diffuse)
 {
-	this->specular.r = color.x;
-	this->specular.g = color.y;
-	this->specular.b = color.z;
-	this->specular.a = 1;
+	this->diffuse = diffuse;
 }
 
-void Light::apply(GLenum LightNumber)
+void Light::setSpecular(vec4 specular)
 {
-	setAmbient(vec4(0.1, 0.1, 0.1, 1.0));
-	setDiffuse(vec4(1.0, 1.0, 1.0, 1.0));
-	setSpecular(vec4(1.0, 1.0, 1.0, 1.0));
+	this->specular = specular;
+}
 
-	glLightfv(LightNumber, GL_POSITION, value_ptr(position));
-	glLightfv(LightNumber, GL_AMBIENT, value_ptr(ambient));
-	glLightfv(LightNumber, GL_DIFFUSE, value_ptr(diffuse));
-	glLightfv(LightNumber, GL_SPECULAR, value_ptr(specular));
+glm::vec4& Light::getDirection()
+{
+	return this->direction;
+}
+
+glm::vec4& Light::getAmbient()
+{
+	return this->ambient;
+}
+
+glm::vec4& Light::getDiffuse()
+{
+	return this->diffuse;
+}
+
+glm::vec4& Light::getSpecular()
+{
+	return this->specular;
 }

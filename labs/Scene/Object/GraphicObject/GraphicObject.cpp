@@ -39,6 +39,11 @@ void GraphicObject::setTextureId(int id)
 	this->textureId = id;
 }
 
+void GraphicObject::setMaterialId(int id)
+{
+	this->materialId = id;
+}
+
 vec4& GraphicObject::getColor()
 {
 	return color;
@@ -49,14 +54,20 @@ mat4& GraphicObject::getModelMatrix()
 	return modelMatrix;
 }
 
+
+int GraphicObject::getMeshId()
+{
+	return meshId;
+}
+
 int GraphicObject::getTextureId()
 {
 	return textureId;
 }
 
-int GraphicObject::getMeshId()
+int GraphicObject::getMaterialId()
 {
-	return meshId;
+	return materialId;
 }
 
 // расчет матрицы modelMatrix на основе position и angle

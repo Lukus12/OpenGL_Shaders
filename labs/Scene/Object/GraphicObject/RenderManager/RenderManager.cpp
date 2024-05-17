@@ -1,12 +1,23 @@
 #include "RenderManager.h"
 
+
+
 void RenderManager::init()
 {
 	// Здесь происходит инициализация объекта RenderManager после инициализации OpenGL
 	// загрузка шейдеров, установка параметров и т.д.
-	
-	// загрузка шейдера
-	shader.load("Data//SHADER//Example.vsh", "Data//SHADER/Example.fsh");
+	Shader shader;
+	shader.load("Data//SHADERS//DiffuseTexture.vsh", "Data//SHADERS/DiffuseTexture.fsh");
+	shaders.push_back(shader);
+
+	//утсанавливаем освещение
+	Light ligth;
+	ligth.setDirection(vec3(0, 5, 5));
+	ligth.setDiffuse(vec4(1, 1, 1, 1));
+	ligth.setAmbient(vec4(0.5, 0.5, 0.5, 1));
+	ligth.setSpecular(vec4(0.5, 0.5, 0.5, 1));
+	lights.push_back(ligth);
+
 }
 
 void RenderManager::start()
@@ -41,12 +52,25 @@ void RenderManager::addToRenderQueue(GraphicObject& graphicObject)
 void RenderManager::finish()
 {
 	// активируем шейдер, используемый для вывода объекта
+	Shader shader = shaders[0];
 	shader.activate();
+
 	// устанавливаем матрицу проекции
 	mat4& projectionMatrix = camera->getProjectionMatrix();
 	shader.setUniform("projectionMatrix", projectionMatrix);
+
 	// получаем матрицу камеры
 	mat4& viewMatrix = camera->getViewMatrix();
+
+	// выбор освещения
+	Light* lightActiv = &(lights[0]);
+	vec4 lightVector = viewMatrix * lightActiv->getDirection();
+
+	shader.setUniform("lAmbient", lightActiv->getAmbient());
+	shader.setUniform("lDiffuse", lightActiv->getDiffuse());
+	shader.setUniform("lSpecular", lightActiv->getSpecular());
+	shader.setUniform("lPosition", lightVector);
+
 	// выводим все объекты
 	for (auto& graphicObject : graphicObjects) {
 		// устанавливаем матрицу наблюдения модели
@@ -60,6 +84,16 @@ void RenderManager::finish()
 
 		// uniform-переменная texture_0 связанна с нулевым текстурным блоком 
 		shader.setUniform("texture_0", 0);
+
+		//устанавливаем материал 
+		int materialId = graphicObject.getMaterialId();
+		Material* material = ResourceManager::instance().getMaterial(materialId);
+		if (material != nullptr) {
+			shader.setUniform("mAmbient", material->getAmbient());
+			shader.setUniform("mDiffuse", material->getDiffuse());
+			shader.setUniform("mSpecular", material->getSpecular());
+			shader.setUniform("mShininess", material->getShininess());
+		}
 
 		// выводим меш
 		int meshId = graphicObject.getMeshId();

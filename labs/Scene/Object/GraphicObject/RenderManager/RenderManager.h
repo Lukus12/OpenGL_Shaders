@@ -8,7 +8,12 @@
 #include <fstream>
 #include <sstream>
 
-#include "../../Data/Data.h"
+#include "../Shader/Shader.h"
+#include "../../Scene/Camera/Camera.h"
+#include "../GraphicObject.h"
+#include "../ResourceManager/ResourceManager.h"
+#include "..//Material/Material.h"
+#include "../../Scene/Lighting/Light.h"
 
 //  Ћј—— ƒЋя ¬«ј»ћќƒ≈…—“¬»я — OPENGL
 // ¬≈—№ ¬џ¬ќƒ ќ—”ў≈—“¬Ћя≈“—я „≈–≈« ≈ƒ»Ќ—“¬≈ЌЌџ… Ё «≈ћѕЋя– ƒјЌЌќ√ќ  Ћј——ј
@@ -41,7 +46,9 @@ private:
 	RenderManager& operator=(const RenderManager&) = delete;
 private:
 	// используемые шейдеры 
-	std::vector<Shader> shaders;
+	std::vector<Shader> shaders = {};
+	// используемые источники света 
+	std::vector<Light> lights = {};
 	// указатель на камеру
 	Camera* camera = {};
 	// список графических объектов, которые необходимо вывести в данном кадре

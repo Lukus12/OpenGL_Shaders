@@ -147,7 +147,9 @@
     <ClCompile Include="Display\Simulation.cpp" />
     <ClCompile Include="labs.cpp" />
     <ClCompile Include="Scene\Camera\Camera.cpp" />
+    <ClCompile Include="Scene\Lighting\Light.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\GraphicObject.cpp" />
+    <ClCompile Include="Scene\Object\GraphicObject\Material\Material.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\Mesh\Mesh.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\RenderManager\RenderManager.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.cpp" />
@@ -160,7 +162,9 @@
     <ClInclude Include="Display\Simulation.h" />
     <ClInclude Include="General_Heading.h" />
     <ClInclude Include="Scene\Camera\Camera.h" />
+    <ClInclude Include="Scene\Lighting\Light.h" />
     <ClInclude Include="Scene\Object\GraphicObject\GraphicObject.h" />
+    <ClInclude Include="Scene\Object\GraphicObject\Material\Material.h" />
     <ClInclude Include="Scene\Object\GraphicObject\Mesh\Mesh.h" />
     <ClInclude Include="Scene\Object\GraphicObject\RenderManager\RenderManager.h" />
     <ClInclude Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.h" />

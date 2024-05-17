@@ -20,7 +20,7 @@ void main(int argc, char** argv)
 	glutInitWindowSize(800, 600);
 	// создание окна
 	glutCreateWindow("");
-	glutSetWindowTitle("Laba_05 [ ]");
+	glutSetWindowTitle("Laba_06 [ ]");
 	// устанавливаем функцию, которая будет вызываться для перерисовки окна
 	QueryPerformanceFrequency(&frequency);
 	QueryPerformanceCounter(&previous);

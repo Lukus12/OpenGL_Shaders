@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../../../General_Heading.h"
-
 #include "../Mesh/Mesh.h"
 #include "../Texture/Texture.h"
+#include "../Material/Material.h"
+
 #include <thread>
 
 using namespace std;
@@ -23,12 +24,16 @@ public:
 	// ¬озвращаемое значение - индекс меша в менеджере ресурсов
 	int loadMesh(string filename);
 	int loadTexture(string filename);
-	// ѕолучение текстуры по еЄ индексу
-	// ≈сли такой текстуры нет (недействительный индекс) возвращаетс€ nullptr
-	Texture* getTexture(int index);
+	int loadMaterial(string filename);
 	// ѕолучение меша по его индексу
 	// ≈сли такого меша нет (недействительный индекс) возвращаетс€ nullptr
 	Mesh* getMesh(int index);
+	// ѕолучение текстуры по еЄ индексу
+	// ≈сли такой текстуры нет (недействительный индекс) возвращаетс€ nullptr
+	Texture* getTexture(int index);
+	// ѕолучение материала по его индексу
+	// ≈сли такого материала нет (недействительный индекс) возвращаетс€ nullptr
+	Material* getMaterial(int index);
 private:
 	// конструктор по умолчанию (объ€влен приватным)
 	// в результате нельз€ создать ни одного объекта данного класса вне самого класса
@@ -40,15 +45,23 @@ private:
 private:
 	//очистка мешей
 	void clearMeshes();
+	//очистка текстур
+	void clearTextures();
+	//очистка материалов
+	void clearMaterials();
 	//асинхронна€ загрузка мешей
 	//int asyncLoadMesh(string filename);
 private:
 	// вектор дл€ хранени€ всех мешей
 	vector<Mesh> meshes;
 	// вектор дл€ хранени€ всех текстур
-	vector<Texture> texturs;
+	vector<Texture> textures;
+	// вектор дл€ хранени€ всех материалов
+	vector<Material> materials;
 	// ’ранение индексов мешей по их именам
 	map<string, int> meshIndexMap;
 	// ’ранение индексов текстур по их именам
 	map<string, int> textureIndexMap;
+	// ’ранение индексов материалов по их именам
+	map<string, int> materialIndexMap;
 };

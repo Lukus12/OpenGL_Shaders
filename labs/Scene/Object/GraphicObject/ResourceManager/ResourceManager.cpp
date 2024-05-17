@@ -41,29 +41,61 @@ int ResourceManager::loadTexture(string filename)
 
     Texture texture;
     texture.load(filename);
-    texturs.push_back(texture);
-    int index = texturs.size() - 1;
+    textures.push_back(texture);
+    int index = textures.size() - 1;
     textureIndexMap[filename] = index; // Сохраняем индекс текстуры по имени файла
 
     std::cout << "Texture '" << filename << "' loaded. Index: " << index << std::endl;
     return index;
 }
 
-Texture* ResourceManager::getTexture(int index)
+int ResourceManager::loadMaterial(std::string filename)
 {
-    if (index >= 0 && index < texturs.size()) {
-        return &texturs[index];
+    // Проверяем, был ли ранее загружен такой матриал
+    // find(). Если элемент не найден, то возвращается итератор,
+    // указывающий на позицию за последним элементом в контейнере
+    if (materialIndexMap.find(filename) != materialIndexMap.end())
+    {
+        std::cout << "Material '" << filename << "' already loaded. Returning existing index.\n";
+        return materialIndexMap[filename]; // если есть, то возвращаем его
+    }
+
+    //иначе создаём новый
+
+    Material material;
+    material.loadFromJson(filename);
+    materials.push_back(material);
+    int index = materials.size() - 1;
+    materialIndexMap[filename] = index; // Сохраняем индекс меша по имени файла
+
+    std::cout << "Material '" << filename << "' loaded. Index: " << index << std::endl;
+    return index;
+}
+
+Mesh* ResourceManager::getMesh(int index)
+{
+    if (index >= 0 && index < meshes.size()) {
+        return &meshes[index];
     }
 
     return nullptr;
 }
 
-Mesh* ResourceManager::getMesh(int index)
+Texture* ResourceManager::getTexture(int index)
 {
-    if (index >= 0 && index < meshes.size()){
-        return &meshes[index];
+    if (index >= 0 && index < textures.size()) {
+        return &textures[index];
     }
-   
+
+    return nullptr;
+}
+
+Material* ResourceManager::getMaterial(int index)
+{
+    if (index >= 0 && index < materials.size()) {
+        return &materials[index];
+    }
+
     return nullptr;
 }
 
@@ -72,6 +104,18 @@ void ResourceManager::clearMeshes()
 {
     meshes.clear();
     meshIndexMap.clear();
+}
+
+void ResourceManager::clearTextures()
+{
+    textures.clear();
+    textureIndexMap.clear();
+}
+
+void ResourceManager::clearMaterials()
+{
+    materials.clear();
+    materialIndexMap.clear();
 }
 
 /*int ResourceManager::asyncLoadMesh(string filename)
