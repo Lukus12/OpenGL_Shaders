@@ -10,122 +10,27 @@ vector<GraphicObject> graphicObjects;
 //Позиция курсора
 POINT lastCursorPos;
 
-void initGraphicObjects()
-{
-	// ссылка на менеджер ресурсов (для удобства)
-	ResourceManager& rm = ResourceManager::instance();
-	// ссылка на рендер
-	RenderManager& renderManager = RenderManager::instance();
+Light light;
+Scene scene;
 
-	renderManager.init();
-	renderManager.setCamera(&camera);
-
-	// временные переменные для хранения идентификаторов меша, текстуры и материала
-	int meshId = -1;
-	int textureId = -1;
-	int materialId = -1;
-
-	// временная переменная для представления графического объекта
-	GraphicObject graphicObject;
-
-	// добавление графического объекта 1
-	meshId = rm.loadMesh("Data//MESHES//buildings//house_2.obj");
-	graphicObject.setMeshId(meshId);
-
-	textureId = rm.loadTexture("Data//TEXTURES//buildings//house_2_orange.png");
-	graphicObject.setTextureId(textureId);
-
-	materialId = rm.loadMaterial("Data//MATERIALS//dull_material.json");
-	graphicObject.setMaterialId(materialId);
-
-	graphicObject.setColor(vec4(0.2, 0.2, 0.2, 1));
-	graphicObject.setPosition(vec3(0, 0, 0));
-	graphicObject.setAngle(0.0);
-
-	graphicObjects.push_back(graphicObject);
-
-	// добавление графического объекта 2
-	meshId = rm.loadMesh("Data//MESHES//natures//big_tree.obj");
-	graphicObject.setMeshId(meshId);
-
-	textureId = rm.loadTexture("Data//TEXTURES//natures//nature.png");
-	graphicObject.setTextureId(textureId);
-
-	materialId = rm.loadMaterial("Data//MATERIALS//dull_material.json");
-	graphicObject.setMaterialId(materialId);
-
-	graphicObject.setColor(vec4(0.2, 0.8, 0.2, 1));
-	graphicObject.setPosition(vec3(7.5, -0.75, 2.5));
-	graphicObject.setAngle(0.0);
-	graphicObjects.push_back(graphicObject);
-	// добавление графического объекта 3
-	meshId = rm.loadMesh("Data//MESHES//natures//big_tree.obj");
-	graphicObject.setMeshId(meshId);
-
-	textureId = rm.loadTexture("Data//TEXTURES//natures//nature.png");
-	graphicObject.setTextureId(textureId);
-
-	materialId = rm.loadMaterial("Data//MATERIALS//dull_material.json");
-	graphicObject.setMaterialId(materialId);
-
-	graphicObject.setColor(vec4(0.2, 0.8, 0.2, 1));
-	graphicObject.setPosition(vec3(-7.5, -0.75, 2.5));
-	graphicObject.setAngle(0.0);
-	graphicObjects.push_back(graphicObject);
-	// добавление графического объекта 4
-	meshId = rm.loadMesh("Data//MESHES//vehicles//police_car.obj");
-	graphicObject.setMeshId(meshId);
-
-	textureId = rm.loadTexture("Data//TEXTURES//vehicles//police_car.png");
-	graphicObject.setTextureId(textureId);
-
-	materialId = rm.loadMaterial("Data//MATERIALS//shiny_material.json");
-	graphicObject.setMaterialId(materialId);
-
-	graphicObject.setColor(vec4(0.2, 0.2, 1.0, 1));
-	graphicObject.setPosition(vec3(+4.5, -2.15, +6.5));
-	graphicObject.setAngle(-115.0);
-	graphicObjects.push_back(graphicObject);
-	// добавление графического объекта 5
-	meshId = rm.loadMesh("Data//MESHES//vehicles//police_car.obj");
-	graphicObject.setMeshId(meshId);
-
-	textureId = rm.loadTexture("Data//TEXTURES//vehicles//police_car.png");
-	graphicObject.setTextureId(textureId);
-
-	materialId = rm.loadMaterial("Data//MATERIALS//shiny_material.json");
-	graphicObject.setMaterialId(materialId);
-
-	graphicObject.setColor(vec4(0.23, 0.23, 1.0, 1));
-	graphicObject.setPosition(vec3(+4.25, -2.15, +10.5));
-	graphicObject.setAngle(+105.0);
-	graphicObjects.push_back(graphicObject);
-
-	// добавление графического объекта 6
-	meshId = rm.loadMesh("Data//MESHES//vehicles//jeep.obj");
-	graphicObject.setMeshId(meshId);
-
-	textureId = rm.loadTexture("Data//TEXTURES//vehicles//jeep_purple.png");
-	graphicObject.setTextureId(textureId);
-
-	materialId = rm.loadMaterial("Data//MATERIALS//shiny_material.json");
-	graphicObject.setMaterialId(materialId);
-
-	graphicObject.setColor(vec4(0.95, 0.13, 0.13, 1));
-	graphicObject.setPosition(vec3(-1.25, -2.15, +9.0));
-	graphicObject.setAngle(+170.0);
-	graphicObjects.push_back(graphicObject);
-	
-}
+string renderInfo;
+string sceneInfo;
 
 
 void init() {
 
-	//начальное положение камеры
-	camera.setProjectionMatrix(35.0, 800.0 / 600.0, 1.0, 100.0);
 
-	//заполнение граффических объектов
-	initGraphicObjects();
+	RenderManager& renderManager = RenderManager::instance();
+	renderManager.init();
+	renderManager.setCamera(&camera);
+	renderManager.setLight(&light);
+
+	scene.setCamera(&camera);
+	scene.init("Data//models.json");
+	scene.loadFromJson("Data//SCENES//big_scene.json");
+
+	//начальное положение камеры
+	//camera.setProjectionMatrix(35.0, 800.0 / 600.0, 1.0, 100.0);
 	//начальное местоположение курсора
 	GetCursorPos(&lastCursorPos);
 }

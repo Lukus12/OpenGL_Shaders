@@ -10,7 +10,7 @@ int ResourceManager::loadMesh(std::string filename)
     // указывающий на позицию за последним элементом в контейнере
     if (meshIndexMap.find(filename) != meshIndexMap.end())
     {
-        std::cout << "Mesh '" << filename << "' already loaded. Returning existing index.\n";
+        //std::cout << "Mesh '" << filename << "' already loaded. Returning existing index.\n";
         return meshIndexMap[filename]; // если есть, то возвращаем его
     }
 
@@ -22,7 +22,7 @@ int ResourceManager::loadMesh(std::string filename)
     int index = meshes.size() - 1;
     meshIndexMap[filename] = index; // Сохраняем индекс меша по имени файла
 
-    std::cout << "Mesh '" << filename << "' loaded. Index: " << index << std::endl;
+    //std::cout << "Mesh '" << filename << "' loaded. Index: " << index << std::endl;
     return index;
 }
 
@@ -33,7 +33,7 @@ int ResourceManager::loadTexture(string filename)
     // указывающий на позицию за последним элементом в контейнере
     if (textureIndexMap.find(filename) != textureIndexMap.end())
     {
-        std::cout << "Texture '" << filename << "' already loaded. Returning existing index.\n";
+        //std::cout << "Texture '" << filename << "' already loaded. Returning existing index.\n";
         return textureIndexMap[filename]; // если есть, то возвращаем его
     }
 
@@ -45,7 +45,7 @@ int ResourceManager::loadTexture(string filename)
     int index = textures.size() - 1;
     textureIndexMap[filename] = index; // Сохраняем индекс текстуры по имени файла
 
-    std::cout << "Texture '" << filename << "' loaded. Index: " << index << std::endl;
+    //std::cout << "Texture '" << filename << "' loaded. Index: " << index << std::endl;
     return index;
 }
 
@@ -56,7 +56,7 @@ int ResourceManager::loadMaterial(std::string filename)
     // указывающий на позицию за последним элементом в контейнере
     if (materialIndexMap.find(filename) != materialIndexMap.end())
     {
-        std::cout << "Material '" << filename << "' already loaded. Returning existing index.\n";
+        //std::cout << "Material '" << filename << "' already loaded. Returning existing index.\n";
         return materialIndexMap[filename]; // если есть, то возвращаем его
     }
 
@@ -68,7 +68,7 @@ int ResourceManager::loadMaterial(std::string filename)
     int index = materials.size() - 1;
     materialIndexMap[filename] = index; // Сохраняем индекс меша по имени файла
 
-    std::cout << "Material '" << filename << "' loaded. Index: " << index << std::endl;
+    //std::cout << "Material '" << filename << "' loaded. Index: " << index << std::endl;
     return index;
 }
 

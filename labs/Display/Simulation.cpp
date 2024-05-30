@@ -26,8 +26,8 @@ void simulation()
 
 void moveCamera(float simulationTime)
 {
-	float SpeedHorizontal = 100 * simulationTime;
-	float SpeedVertical = 400 * simulationTime;
+	float SpeedHorizontal = 500 * simulationTime;
+	float SpeedVertical = 15000 * simulationTime;
 	float SpeedZoom = 200 * simulationTime;
 
 	if (GetAsyncKeyState(VK_UP)) camera.moveOXZ(0, SpeedVertical);

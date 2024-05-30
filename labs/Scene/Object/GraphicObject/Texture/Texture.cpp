@@ -67,4 +67,6 @@ void Texture::bind(GLenum texUnit)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-
+void Texture::disableAll() {
+	glBindTexture(GL_TEXTURE_2D, 0);
+}

@@ -105,12 +105,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Release\Additional_Libraries\freeglut\include;$(SolutionDir)Release\Additional_Libraries\glm;$(SolutionDir)Release\Additional_Libraries\Tencent_rapidjson\include;$(SolutionDir)Release\Additional_Libraries\glew-2.1.0\include;$(SolutionDir)Release\Additional_Libraries\DevIL_Windows_SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Release\Additional_Libraries\freeglut\lib;$(SolutionDir)Release\Additional_Libraries\glew-2.1.0\\lib\Release\Win32;$(SolutionDir)Release\Additional_Libraries\DevIL_Windows_SDK\lib\x86\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;freeglut.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,6 +158,7 @@
     <ClCompile Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\Shader\Shader.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\Texture\Texture.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Data.h" />
@@ -170,6 +174,7 @@
     <ClInclude Include="Scene\Object\GraphicObject\ResourceManager\ResourceManager.h" />
     <ClInclude Include="Scene\Object\GraphicObject\Shader\Shader.h" />
     <ClInclude Include="Scene\Object\GraphicObject\Texture\Texture.h" />
+    <ClInclude Include="Scene\Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,53 +1,63 @@
 #pragma once
 
-#include "../../General_Heading.h"
+#include "../../../General_Heading.h"
 
 using namespace std;
 using namespace glm;
+
+enum class GraphicObjectType {
+	none, road, building,
+	vehicle, big_nature, small_nature,
+	big_prop, medium_prop, small_prop
+};
 
 // КЛАСС ДЛЯ РАБОТЫ С ГРАФИЧЕСКИМ ОБЪЕКТОМ
 class GraphicObject
 {
 public:
-	// конструктор по умолчанию
 	GraphicObject();
 
-	// установить цвет объекта
-	void setColor(vec4 color);
-	// установить позицию объекта
-	void setPosition(vec3 position);
-	// установить угол поворота в градусах относительно оси OY по часовой стрелке
+	void setColor(vec4& color);
+	void setPosition(vec3& position);
 	void setAngle(float degree);
+	void setType(GraphicObjectType type);
+	void setDimensions(vec3& dimensions);
 
-	// установить идентификатор используемого меша
 	void setMeshId(int id);
-	// установить идентификатор используемой текстуры
 	void setTextureId(int id);
-	// установить идентификатор используемого материала
 	void setMaterialId(int id);
 
-	// получить параметры и идентификаторы ресурсов
-	vec4& getColor();
+	vec4 getColor();
+	vec3 getPosition();
+	float getAngle();
+	GraphicObjectType getType();
+	vec3& getDimensions();
 	mat4& getModelMatrix();
+
 	int getMeshId();
 	int getTextureId();
 	int getMaterialId();
 
+	int getMeshIdConst() const {
+		return meshId;
+	}
+	int getTextureIdConst() const {
+		return textureId;
+	}
+	int getMaterialIdConst() const {
+		return materialId;
+	}
+
 private:
-	// идентификатор используемого меша
-	int meshId;
-	// идентификатор используемой текстуры
-	int textureId;
-	// идентификатор используемой текстуры
-	int materialId;
-	// цвет объекта
-	vec4 color = {};
-	// матрица модели (задает позицию и ориентацию)
-	mat4 modelMatrix;
-	// угол поворота
+	vec4 color;
+	GraphicObjectType type;
+	vec3 dimensions;
+	vec3 position;
 	float angle;
-	//позиция в логических координатах
-	vec3 position = {};
-	//перерасчет модели матрицы на основании ее угла и положения
-	void recalculateModelMatrix();
+
+	int meshId;
+	int textureId;
+	int materialId;
+
+	mat4 modelMatrix;
 };

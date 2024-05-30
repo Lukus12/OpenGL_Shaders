@@ -1,10 +1,9 @@
 #pragma once
 
 
-#include "../../../General_Heading.h"
+#include "../../../../General_Heading.h"
 
-#include <string>
-#include <fstream>
+#include <vector>
 #include <map>
 
 
@@ -26,6 +25,7 @@ public:
 	void setUniform(std::string name, glm::vec2& value);
 	void setUniform(std::string name, glm::vec4& value);
 	void setUniform(std::string name, glm::mat4& value);
+	void setUniform(std::string, std::vector<glm::mat4>&);
 
 private:
 	// создание шейдерного объекта указанного типа и загрузка исходного текста шейдера из указанного файла

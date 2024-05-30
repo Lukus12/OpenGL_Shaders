@@ -12,9 +12,6 @@ uniform vec4 lDiffuse;
 uniform vec4 lSpecular;
 uniform vec4 lPosition;
 
-//vec4 lSpecular=vec4(0.1, 0.0, 0.9, 1);
-//vec4 mSpecular=vec4(0.1, 0.0, 0.9, 1.0);
-
 in vec3 position;
 in vec3 normal;
 in vec2 texCoord;
@@ -27,11 +24,10 @@ void main (void)
 	vec3 n_ToEye = normalize (vec3(0,0,0) - position);
 	vec3 n_ToLight = normalize(vec3(lPosition));
 	vec3 n_Reflect = normalize(reflect(-n_ToLight,n_Normal));
-
+	
 	vec4 ambient = mAmbient * lAmbient;  
 	vec4 diffuse = mDiffuse * lDiffuse * max(dot(n_Normal, n_ToLight), 0.0f);
-	//vec4 specular = mSpecular * lSpecular * pow(max(dot(n_ToEye, n_Reflect), 0.0f), mShininess);
-	vec4 specular = mSpecular * lSpecular;
+	vec4 specular = mSpecular * lSpecular * pow(max(dot(n_ToEye, n_Reflect), 0.0f), mShininess);
 
 	vec3 color = vec3(ambient + diffuse + specular); 
 	float alpha = mDiffuse.a;
@@ -41,3 +37,4 @@ void main (void)
 	
 	outputColor = vec4(color, alpha);
 }
+

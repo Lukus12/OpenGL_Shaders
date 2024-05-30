@@ -2,6 +2,8 @@
 
 #include "../Scene/Object/GraphicObject/RenderManager/RenderManager.h"
 
+#include "../Scene/Scene.h"
+
 // используемые пространства имен
 using namespace glm;
 using namespace std;
@@ -14,5 +16,11 @@ extern Camera camera;
 extern vector<GraphicObject> graphicObjects;
 //ѕозици€ курсора
 extern POINT lastCursorPos;
+
+extern Light light;
+extern Scene scene;
+
+extern string renderInfo;
+extern string sceneInfo;
 
 void init();

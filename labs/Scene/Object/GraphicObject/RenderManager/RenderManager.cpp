@@ -1,47 +1,61 @@
 #include "RenderManager.h"
 
-
+void RenderManager::draw(vector<mat4>& matrices, vector<Shader>& sh, int meshId)
+{
+	if (matrices.size() > 0) {
+		sh[0].setUniform("modelViewMatrix", matrices);
+		Mesh* mesh = ResourceManager::instance().getMesh(meshId);
+		if (mesh != nullptr) {
+			mesh->drawMany(matrices.size());
+		}
+		matrices.clear();
+		drawCallCount++;
+	}
+}
 
 void RenderManager::init()
 {
 	// «десь происходит инициализаци€ объекта RenderManager после инициализации OpenGL
 	// загрузка шейдеров, установка параметров и т.д.
 	Shader shader;
-	shader.load("Data//SHADERS//DiffuseTexture.vsh", "Data//SHADERS/DiffuseTexture.fsh");
+	shader.load("Data//SHADERS//DiffuseTextureInstanced.vsh", "Data//SHADERS//DiffuseTextureInstanced.fsh");
 	shaders.push_back(shader);
-
-	//утсанавливаем освещение
-	Light ligth;
-	ligth.setDirection(vec3(0, 5, 5));
-	ligth.setDiffuse(vec4(1, 1, 1, 1));
-	ligth.setAmbient(vec4(0.5, 0.5, 0.5, 1));
-	ligth.setSpecular(vec4(0.5, 0.5, 0.5, 1));
-	lights.push_back(ligth);
 
 }
 
 void RenderManager::start()
 {
-	// очистка вектора графических объектов
-	graphicObjects.clear();
-
-	// отчищаем буфер кадра
+	// очистка буфера кадра
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// включаем тест глубины (на вс€кий случай)
+	// включение теста глубины (на вс€кий случай)
 	glEnable(GL_DEPTH_TEST);
 
-	// вывод полигонов в виде линий с отсечением нелицевых граней
-	/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);*/
+	// активаци€ шейдера
+	shaders[0].activate();
+	// устанавливаем матрицу проекции
+	mat4& projectionMatrix = camera->getProjectionMatrix();
+	shaders[0].setUniform("projectionMatrix", projectionMatrix);
+
+	//устанавливаем параметры света
+	shaders[0].setUniform("lAmbient", light->getAmbient());
+	shaders[0].setUniform("lDiffuse", light->getDiffuse());
+	shaders[0].setUniform("lSpecular", light->getSpecular());
+	shaders[0].setUniform("lPosition", light->getDirection());
+
+	//очистка вектора объектов
+	graphicObjects.clear();
 
 }
 
 void RenderManager::setCamera(Camera* camera)
 {
 	this->camera = camera;
+}
+
+void RenderManager::setLight(Light* light)
+{
+	this->light = light;
 }
 
 void RenderManager::addToRenderQueue(GraphicObject& graphicObject)
@@ -51,53 +65,62 @@ void RenderManager::addToRenderQueue(GraphicObject& graphicObject)
 
 void RenderManager::finish()
 {
-	// активируем шейдер, используемый дл€ вывода объекта
-	Shader shader = shaders[0];
-	shader.activate();
-
-	// устанавливаем матрицу проекции
-	mat4& projectionMatrix = camera->getProjectionMatrix();
-	shader.setUniform("projectionMatrix", projectionMatrix);
+	materialChanged = 0;
+	textureChanged = 0;
+	drawCallCount = 0;
 
 	// получаем матрицу камеры
 	mat4& viewMatrix = camera->getViewMatrix();
+	int prevMaterialId = -1;
+	int prevTextureId = -1;
+	int prevMeshId = -1;
+	vector<mat4>modelMatrices;
 
-	// выбор освещени€
-	Light* lightActiv = &(lights[0]);
-	vec4 lightVector = viewMatrix * lightActiv->getDirection();
-
-	shader.setUniform("lAmbient", lightActiv->getAmbient());
-	shader.setUniform("lDiffuse", lightActiv->getDiffuse());
-	shader.setUniform("lSpecular", lightActiv->getSpecular());
-	shader.setUniform("lPosition", lightVector);
-
-	// выводим все объекты
 	for (auto& graphicObject : graphicObjects) {
-		// устанавливаем матрицу наблюдени€ модели
-		mat4 modelViewMatrix = viewMatrix * graphicObject.getModelMatrix();
-		shader.setUniform("modelViewMatrix", modelViewMatrix);
-
-		// устанавливаем текстуру (прив€зываем к текстурному блоку)
-		int textureId = graphicObject.getTextureId();
-		Texture* texture = ResourceManager::instance().getTexture(textureId);
-		if (texture != nullptr) texture->bind(GL_TEXTURE0);
-
-		// uniform-переменна€ texture_0 св€занна с нулевым текстурным блоком 
-		shader.setUniform("texture_0", 0);
-
-		//устанавливаем материал 
 		int materialId = graphicObject.getMaterialId();
-		Material* material = ResourceManager::instance().getMaterial(materialId);
-		if (material != nullptr) {
-			shader.setUniform("mAmbient", material->getAmbient());
-			shader.setUniform("mDiffuse", material->getDiffuse());
-			shader.setUniform("mSpecular", material->getSpecular());
-			shader.setUniform("mShininess", material->getShininess());
+		if (prevMaterialId != materialId) {
+			draw(modelMatrices, shaders, prevMeshId);
+			Material* mater = ResourceManager::instance().getMaterial(materialId);
+			if (mater != nullptr) {
+				shaders[0].setUniform("mAmbient", mater->getAmbient());
+				shaders[0].setUniform("mDiffuse", mater->getDiffuse());
+				shaders[0].setUniform("mSpecular", mater->getSpecular());
+				shaders[0].setUniform("mShininess", mater->getShininess());
+			}
+			prevMaterialId = materialId;
+			materialChanged++;
 		}
 
-		// выводим меш
+		int textureId = graphicObject.getTextureId();
+		if (prevTextureId != textureId) {
+			draw(modelMatrices, shaders, prevMeshId);
+			Texture* texture = ResourceManager::instance().getTexture(textureId);
+			if (texture != nullptr) {
+				texture->bind(GL_TEXTURE0);
+			}
+			shaders[0].setUniform("texture_0", 0);
+			prevTextureId = textureId;
+			textureChanged++;
+		}
+
+		mat4 modelViewMatrix = viewMatrix * graphicObject.getModelMatrix();
 		int meshId = graphicObject.getMeshId();
-		Mesh* mesh = ResourceManager::instance().getMesh(meshId);
-		if (mesh != nullptr) mesh->draw();
+		if (prevMeshId != meshId) {
+			draw(modelMatrices, shaders, prevMeshId);
+			prevMeshId = meshId;
+		}
+		// устанавливаем матрицу наблюдени€ модели
+		modelMatrices.push_back(modelViewMatrix);
+		if (modelMatrices.size() >= 20) {
+			draw(modelMatrices, shaders, prevMeshId);
+		}
 	}
+	Texture::disableAll();
+}
+
+string RenderManager::getRenderDescription()
+{
+	return "[Material changed: " + to_string(materialChanged) +
+		"][Texture changed: " + to_string(textureChanged) +
+		"][Draw calls: " + to_string(drawCallCount) + "]";
 }

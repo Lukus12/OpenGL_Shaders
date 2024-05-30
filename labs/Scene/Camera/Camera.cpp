@@ -71,6 +71,11 @@ void Camera::zoom(float dR)
 	recalculateViewMatrix();
 }
 
+vec3 Camera::getCameraPosition()
+{
+	return eye;
+}
+
 void Camera::recalculateViewMatrix()
 {
 	//находим пол€рные координаты

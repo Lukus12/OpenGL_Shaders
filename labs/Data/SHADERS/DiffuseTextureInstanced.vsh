@@ -1,7 +1,7 @@
 #version 330 core
 
 uniform mat4 projectionMatrix;
-uniform mat4 modelViewMatrix;
+uniform mat4 modelViewMatrix[20];
 
 layout(location = 0) in vec3 vPosition;
 layout(location = 1) in vec3 vNormal;
@@ -13,9 +13,10 @@ out vec2 texCoord;
 
 void main ()
 {
-	position = vec3(modelViewMatrix * vec4 (vPosition, 1));
-	normal = vec3(modelViewMatrix * vec4 (vNormal, 0));
+	position = vec3(modelViewMatrix[gl_InstanceID] * vec4 (vPosition, 1));
+	normal = vec3(modelViewMatrix[gl_InstanceID] * vec4 (vNormal, 0));
 	texCoord = vec2(vTexCoord.s, 1.0 - vTexCoord.t); 
 
-	gl_Position = projectionMatrix * modelViewMatrix * vec4 (vPosition, 1) ;
+	gl_Position = projectionMatrix * modelViewMatrix[gl_InstanceID] * vec4 (vPosition, 1) ;
 }
+

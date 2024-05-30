@@ -12,10 +12,10 @@ public:
 	Light();
 
 	// задание различных параметров источника света
-	void setDirection(glm::vec3 direction);
-	void setAmbient(glm::vec4 ambient);
-	void setDiffuse(glm::vec4 diffuse);
-	void setSpecular(glm::vec4 specular);
+	void setDirection(glm::vec3& direction);
+	void setAmbient(glm::vec4& ambient);
+	void setDiffuse(glm::vec4& diffuse);
+	void setSpecular(glm::vec4& specular);
 	
 	// получение различных параметров источника света
 	glm::vec4& getDirection();

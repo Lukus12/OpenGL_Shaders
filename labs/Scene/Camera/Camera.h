@@ -31,6 +31,9 @@ public:
 	void rotate(float horizAngle, float vertAngle);
 	// приблизить/удалить камеру к/от точки наблюдения
 	void zoom(float dR);
+	//получить камеру
+	vec3 getCameraPosition();
+
 private:
 	// пересчитать матрицу вида
 	void recalculateViewMatrix();

@@ -2,25 +2,34 @@
 
 Light::Light()
 {
+	this->direction.x = 0;
+	this->direction.y = 20;
+	this->direction.z = 20;
+	this->direction.w = 1;
+	this->ambient = glm::vec4(0.71, 0.71, 0.71, 1);
+	this->diffuse = glm::vec4(0.71, 0.71, 0.71, 1);
+	this->specular = glm::vec4(0.0, 0.0, 0.0, 1);
 }
 
-void Light::setDirection(vec3 direction)
+void Light::setDirection(glm::vec3& direction)
 {
-	//т.к источник света направленный то 4 значение направления 0
-	this->direction = vec4(direction, 0);
+	this->direction.x = direction.x;
+	this->direction.y = direction.y;
+	this->direction.z = direction.z;
+	this->direction.w = 1;
 }
 
-void Light::setAmbient(vec4 ambient)
+void Light::setAmbient(glm::vec4& ambient)
 {
 	this->ambient = ambient;
 }
 
-void Light::setDiffuse(vec4 diffuse)
+void Light::setDiffuse(glm::vec4& diffuse)
 {
 	this->diffuse = diffuse;
 }
 
-void Light::setSpecular(vec4 specular)
+void Light::setSpecular(glm::vec4& specular)
 {
 	this->specular = specular;
 }

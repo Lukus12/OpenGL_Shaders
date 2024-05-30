@@ -1,79 +1,65 @@
 #include "Material.h"
 
-Material::Material()
-{
-}
-
+Material::Material() {}
 
 bool Material::loadFromJson(std::string filename)
 {
-	ifstream f(filename);
-	if (!f.is_open()) {
-		cout << "Fail!\n";
+	std::fstream File(filename);
+	if (!File) {
+		std::cout << "Ошибка при октрытии файла материала!\n";
 		return false;
 	}
-	string jsonString;
-	getline(f, jsonString, static_cast<char>(0));
-	f.close();
-	// парсим - если ошибка, то выходим
-	Document document;
-	document.Parse(jsonString.c_str());
+
+	std::string line;
+	getline(File, line, static_cast<char>(0));
+	File.close();
+
+	rapidjson::Document document;
+	document.Parse(line.c_str());
 	if (document.GetParseError() != 0) {
-		cout << "Invalid file format!\n";
+		std::cout << filename << "Ошибка парсера!\n";
 		return false;
 	}
 
-	vec4 valueParamsMaterial = {};
-
-	for (auto& member : document.GetObject()) {
-		string nameParamsMaterial = member.name.GetString();
-		//cout << nameParamsMaterial << " : ";
-		if (member.value.IsArray()) {
-			/*cout << member.value[0].GetFloat() << " ";
-			cout << member.value[1].GetFloat()<<" ";
-			cout << member.value[2].GetFloat()<<" ";
-			cout << member.value[3].GetFloat()<<" ";
-			cout << endl;*/
-			valueParamsMaterial[0] = member.value[0].GetFloat();
-			valueParamsMaterial[1] = member.value[1].GetFloat();
-			valueParamsMaterial[2] = member.value[2].GetFloat();
-			valueParamsMaterial[3] = member.value[3].GetFloat();
-			if (nameParamsMaterial == "diffuse") {
-				this->diffuse = valueParamsMaterial;
-			}
-			if (nameParamsMaterial == "ambient") {
-				this->ambient = valueParamsMaterial;
-			}
-			if (nameParamsMaterial == "specular") {
-				this->specular = valueParamsMaterial;
-			}
+	if (document.HasMember("ambient")) {
+		auto array = document["ambient"].GetArray();
+		for (int i = 0; i < 4; i++) {
+			ambient[i] = array[i].GetFloat();
 		}
-		else {
-			//cout<< member.value.GetFloat()<<endl;
-			this->shininess = member.value.GetFloat();
-		}
-		valueParamsMaterial = {};
 	}
-
-	return true;
+	if (document.HasMember("diffuse")) {
+		auto array = document["diffuse"].GetArray();
+		for (int i = 0; i < 4; i++) {
+			diffuse[i] = array[i].GetFloat();
+		}
+	}
+	if (document.HasMember("specular")) {
+		auto array = document["specular"].GetArray();
+		for (int i = 0; i < 4; i++) {
+			specular[i] = array[i].GetFloat();
+		}
+	}
+	if (document.HasMember("shineness")) {
+		shininess = document["shininess"].GetFloat();
+	}
 }
 
 glm::vec4& Material::getAmbient()
 {
-	return this->ambient;
+	return ambient;
 }
 
 glm::vec4& Material::getDiffuse()
 {
-	return this->diffuse;
+	return diffuse;
 }
 
 glm::vec4& Material::getSpecular()
 {
-	return this->specular;
+	return specular;
 }
 
 float Material::getShininess()
 {
-	return this->shininess;
+	return shininess;
 }

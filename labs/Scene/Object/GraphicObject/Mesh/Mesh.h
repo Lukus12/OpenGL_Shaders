@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../General_Heading.h"
+#include "../../../../General_Heading.h"
 
 #include <vector>
 #include <string>
@@ -29,7 +29,8 @@ public:
 	// загрузка меша из файла с указанным именем
 	void load(std::string filename);
 	// вывод меша (передача всех вершин в OpenGL)
-	void draw();
+	void drawOne();
+	void drawMany(int count);
 private:
 	// количество индексов (вершин в меше)
 	int indexCount;

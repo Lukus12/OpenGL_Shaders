@@ -159,11 +159,17 @@ void Mesh::load(string filename)
 	return;
 }
 
-void Mesh::draw(){
+void Mesh::drawOne(){
 	//Привыязка VAO-объекта
 	glBindVertexArray(VAO);
 	//Вызов команды отрисовки полигонов
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
 	//«Отвязка» VAO-объекта
+	glBindVertexArray(0);
+}
+
+void Mesh::drawMany(int count) {
+	glBindVertexArray(VAO);
+	glDrawElementsInstanced(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0, count);
 	glBindVertexArray(0);
 }

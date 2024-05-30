@@ -1,5 +1,5 @@
 #pragma once
-#include "../../General_Heading.h"
+#include "../../../../General_Heading.h"
 
 using namespace std;
 using namespace glm;
@@ -12,6 +12,8 @@ public:
 	void load(std::string filename);
 	// применение текстуры (прив€зка к текстурному блоку)
 	void bind(GLenum texUnit = GL_TEXTURE0);
+	// отключение текстурировани€ дл€ всех текстурных блоков
+	static void disableAll();
 private:
 	// индекс текстурного объекта
 	GLuint texIndex;

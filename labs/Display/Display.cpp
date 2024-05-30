@@ -28,7 +28,7 @@ void winFPS() {
 
 		frameCount = 0;
 
-		oss << "Laba_06 [" << averageFPS << " FPS]";
+		oss << "Laba_07 [" << averageFPS << " FPS]";
 		glutSetWindowTitle(oss.str().c_str());
 	}
 
@@ -39,14 +39,15 @@ void display()
 {
 	// для удобства определяем ссылку на RenderManager
 	RenderManager& renderManager = RenderManager::instance();
-	// начинаем вывод нового кадра
+
+	// начинаем вывод нового кадра	
 	renderManager.start();
-	// добавляем в очередь все объекты, которые необходимо вывести
-	for (auto& graphicObject : graphicObjects) {
-		renderManager.addToRenderQueue(graphicObject);
-	}
+	scene.draw();
 	// завершаем построение кадра
 	renderManager.finish();
+
+	sceneInfo = scene.getSceneDescription();
+	renderInfo = renderManager.getRenderDescription();
 
 	// смена переднего и заднего буферов
 	glutSwapBuffers();

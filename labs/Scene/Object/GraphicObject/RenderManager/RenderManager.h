@@ -1,19 +1,14 @@
 #pragma once
-#include "../../../General_Heading.h"
 
-#include <algorithm>
-#include <stdio.h>
+#include "../../../../General_Heading.h"
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
+#include "../../../Lighting/Light.h"
 #include "../Shader/Shader.h"
-#include "../../Scene/Camera/Camera.h"
+#include "../../../Camera/Camera.h"
 #include "../GraphicObject.h"
 #include "../ResourceManager/ResourceManager.h"
 #include "..//Material/Material.h"
-#include "../../Scene/Lighting/Light.h"
+#include "../../../Camera/Camera.h"
 
 // КЛАСС ДЛЯ ВЗАИМОДЕЙСТВИЯ С OPENGL
 // ВЕСЬ ВЫВОД ОСУЩЕСТВЛЯЕТСЯ ЧЕРЕЗ ЕДИНСТВЕННЫЙ ЭКЗЕМПЛЯР ДАННОГО КЛАССА
@@ -31,12 +26,15 @@ public:
 	void init();
 	// Начало вывода очередного кадра (подготовка, очистка вектора графических объектов)
 	void start();
+	void draw(vector<mat4>&, vector<Shader>&, int);
 	// установка используемой камеры
 	void setCamera(Camera* camera);
+	void setLight(Light* light);
 	// добавление в очередь рендеринга очередного объекта для вывода
 	void addToRenderQueue(GraphicObject& graphicObject);
 	// завершение вывода кадра (основная работа)
 	void finish();
+	string getRenderDescription();
 private:
 	// конструктор по умолчанию (приватный)
 	RenderManager() {};
@@ -51,6 +49,11 @@ private:
 	std::vector<Light> lights = {};
 	// указатель на камеру
 	Camera* camera = {};
+	Light* light = {};
 	// список графических объектов, которые необходимо вывести в данном кадре
 	std::vector<GraphicObject> graphicObjects;
+
+	int materialChanged;
+	int textureChanged;
+	int drawCallCount;
 };

@@ -133,6 +133,19 @@ void Shader::setUniform(std::string name, glm::mat4& value)
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setUniform(std::string name, std::vector<glm::mat4>& value) {
+	for (int k = 0; k < value.size(); k++) {
+		GLint location = getUniformLocation(name + "[" + to_string(k) + "]");
+		GLfloat arr[16];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				arr[j + i * 4] = value[k][i][j];
+			}
+		}
+		glUniformMatrix4fv(location, 1, 0, arr);
+	}
+}
+
 // получение индекса (location) uniform-переменной
 GLuint Shader::getUniformLocation(std::string name)
 {
