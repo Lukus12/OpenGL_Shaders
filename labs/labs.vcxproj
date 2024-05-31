@@ -150,6 +150,8 @@
     <ClCompile Include="Display\Simulation.cpp" />
     <ClCompile Include="labs.cpp" />
     <ClCompile Include="Scene\Camera\Camera.cpp" />
+    <ClCompile Include="Scene\FBO\FBO.cpp" />
+    <ClCompile Include="Scene\FBO\Variables.cpp" />
     <ClCompile Include="Scene\Lighting\Light.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\GraphicObject.cpp" />
     <ClCompile Include="Scene\Object\GraphicObject\Material\Material.cpp" />
@@ -166,6 +168,8 @@
     <ClInclude Include="Display\Simulation.h" />
     <ClInclude Include="General_Heading.h" />
     <ClInclude Include="Scene\Camera\Camera.h" />
+    <ClInclude Include="Scene\FBO\FBO.h" />
+    <ClInclude Include="Scene\FBO\Variables.h" />
     <ClInclude Include="Scene\Lighting\Light.h" />
     <ClInclude Include="Scene\Object\GraphicObject\GraphicObject.h" />
     <ClInclude Include="Scene\Object\GraphicObject\Material\Material.h" />

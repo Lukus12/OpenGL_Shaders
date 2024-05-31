@@ -3,6 +3,8 @@
 
 extern LARGE_INTEGER previous, frequency;
 
+unsigned int modeChangeClocks = clock();
+
 void moveCamera(float simulationTime);
 
 double getSimulationTime() {
@@ -34,6 +36,14 @@ void moveCamera(float simulationTime)
 	if (GetAsyncKeyState(VK_DOWN)) camera.moveOXZ(0, -SpeedVertical);
 	if (GetAsyncKeyState(VK_LEFT)) camera.moveOXZ(-SpeedHorizontal, 0);
 	if (GetAsyncKeyState(VK_RIGHT)) camera.moveOXZ(SpeedHorizontal, 0);
+
+	if (GetAsyncKeyState(0x31)) {
+		if (clock() - modeChangeClocks > 200) {
+			postProcessingMode++;
+			if (postProcessingMode > 3) postProcessingMode = 0;
+			modeChangeClocks = clock();
+		}
+	}
 
 	//поворот камеры на правую кнопку мыши
 	POINT cursorPos;

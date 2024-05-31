@@ -2,6 +2,7 @@
 
 #include "../../../../General_Heading.h"
 
+#include "../../../../Scene/FBO/Variables.h"
 #include "../../../Lighting/Light.h"
 #include "../Shader/Shader.h"
 #include "../../../Camera/Camera.h"
@@ -30,6 +31,10 @@ public:
 	// установка используемой камеры
 	void setCamera(Camera* camera);
 	void setLight(Light* light);
+
+	// выводим все объекты
+	void drawAllObjects();
+
 	// добавление в очередь рендеринга очередного объекта для вывода
 	void addToRenderQueue(GraphicObject& graphicObject);
 	// завершение вывода кадра (основная работа)
@@ -52,6 +57,8 @@ private:
 	Light* light = {};
 	// список графических объектов, которые необходимо вывести в данном кадре
 	std::vector<GraphicObject> graphicObjects;
+
+	void drawQuad();
 
 	int materialChanged;
 	int textureChanged;

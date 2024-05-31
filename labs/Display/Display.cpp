@@ -28,7 +28,7 @@ void winFPS() {
 
 		frameCount = 0;
 
-		oss << "Laba_07 [" << averageFPS << " FPS]";
+		oss << "Laba_07 [" << averageFPS << " FPS]" << sceneInfo << renderInfo;
 		glutSetWindowTitle(oss.str().c_str());
 	}
 
@@ -63,4 +63,9 @@ void reshape(int w, int h)
 	glViewport(0, 0, w, h);
 	// устанавливаем матрицу проекции
 	camera.setProjectionMatrix(35.0f, (float)w / h, 1.0f, 500.0f);
+
+	windowWidth = w;
+	windowHeight = h;
+	fbos[0].init(windowWidth, windowHeight, true);
+	fbos[1].init(windowWidth, windowHeight, false);
 }
